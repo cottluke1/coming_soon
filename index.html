@@ -14,11 +14,11 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: center; 
             min-height: 100vh;
             margin: 0;
             text-align: center;
-            padding: 1rem;
+            padding: 2rem 1rem; 
             overflow-x: hidden;
         }
 
@@ -69,36 +69,32 @@
             margin-top: 2rem;
             width: 100%;
         }
-        /* Shared style for all input fields */
         .form-input {
             background-color: #1C1C1C;
             border: 1px solid #383838;
             color: #F3F4F6;
             padding: 0.85rem 1.1rem;
-            border-radius: 0.5rem; /* Tailwind rounded-lg */
+            border-radius: 0.5rem;
             font-size: 1.05rem;
             transition: border-color 0.3s, box-shadow 0.3s;
         }
         .form-input::placeholder {
-            color: #6B7280; /* Tailwind gray-500 */
+            color: #6B7280;
         }
         .form-input:focus {
             outline: none;
             border-color: #3B82F6;
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.4);
         }
-
-        .email-input { /* Specific class for email if needed, but form-input covers basics */
+        .email-input {
             width: 100%;
             max-width: 420px;
             margin: 0 auto 1.25rem auto;
         }
-        
         .name-field-container {
-            max-width: 420px; /* Match email input max-width */
-            margin: 0 auto 0.75rem auto; /* Spacing below name fields */
+            max-width: 420px;
+            margin: 0 auto 0.75rem auto;
         }
-
         .submit-button {
             background-image: linear-gradient(to right, #3B82F6 0%, #2563EB 100%);
             color: #FFFFFF;
@@ -137,41 +133,21 @@
             color: #EF4444;
         }
         .footer {
-            margin-top: 4rem;
+            margin-top: 4rem; 
             font-size: 0.875rem;
             color: #525252;
         }
 
         @media (max-width: 640px) {
-            .logo {
-                font-size: 3rem;
-            }
-            .subtitle {
-                font-size: 1.125rem;
-            }
-            .coming-soon-text {
-                font-size: 1.875rem;
-            }
-            .description-text {
-                font-size: 1rem;
-            }
-            .email-input, .submit-button, .form-input { /* Ensure form-input is also responsive */
-                max-width: 100%;
-                font-size: 1rem;
-            }
-            .form-input, .email-input { /* Consolidate padding for inputs */
-                padding: 0.75rem 1rem;
-            }
-            .submit-button {
-                padding: 0.75rem 1.5rem;
-            }
-            .name-field-container {
-                flex-direction: column; /* Stack name fields on small screens */
-                gap: 0.75rem; /* Add gap when stacked */
-            }
-            .name-field-container > input {
-                width: 100%; /* Make name fields full width when stacked */
-            }
+            .logo { font-size: 3rem; }
+            .subtitle { font-size: 1.125rem; }
+            .coming-soon-text { font-size: 1.875rem; }
+            .description-text { font-size: 1rem; }
+            .email-input, .submit-button, .form-input { max-width: 100%; font-size: 1rem; }
+            .form-input, .email-input { padding: 0.75rem 1rem; }
+            .submit-button { padding: 0.75rem 1.5rem; }
+            .name-field-container { flex-direction: column; gap: 0.75rem; }
+            .name-field-container > input { width: 100%; }
         }
     </style>
 </head>
@@ -243,23 +219,23 @@
         document.getElementById('currentYear').textContent = new Date().getFullYear();
 
         const form = document.getElementById('subscribeForm');
-        const firstNameInput = document.getElementById('firstName'); // Get first name input
-        const lastNameInput = document.getElementById('lastName');   // Get last name input
+        const firstNameInput = document.getElementById('firstName');
+        const lastNameInput = document.getElementById('lastName');
         const emailInput = document.getElementById('email');
         const submitButton = document.getElementById('submitButton');
         const messageDiv = document.getElementById('message');
 
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyNItdJIpXb-Enb6gR5q35baiBlaUz0ZrH4trnoEEddJjEStODmrj5zUX6taD47c_cw/exec';
+        // Updated SCRIPT_URL to your SheetDB endpoint
+        const SCRIPT_URL = 'https://sheetdb.io/api/v1/4vu70qk0wyqlk';
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const firstName = firstNameInput.value.trim(); // Get first name value
-            const lastName = lastNameInput.value.trim();   // Get last name value
+            const firstName = firstNameInput.value.trim();
+            const lastName = lastNameInput.value.trim();
             const email = emailInput.value.trim();
 
-            // Client-side validation for name fields (simple check for non-empty)
             if (!firstName) {
                 messageDiv.textContent = 'Please enter your first name.';
                 messageDiv.classList.add('error-message');
@@ -285,46 +261,54 @@
             messageDiv.classList.remove('success-message', 'error-message');
 
             try {
+                // Prepare data in the format SheetDB expects
+                const dataToSubmit = {
+                    data: [{ // SheetDB expects an array of objects, even for a single row
+                        "First Name": firstName, // Ensure these keys match your SheetDB column names
+                        "Last Name": lastName,
+                        "Email": email,
+                        // "Timestamp": new Date().toISOString() // Optional: Add timestamp client-side if needed
+                                                              // SheetDB can also add timestamps automatically
+                    }]
+                };
+
                 const response = await fetch(SCRIPT_URL, {
                     method: 'POST',
-                    mode: 'cors',
                     headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'Accept': 'application/json', // It's good practice to tell the server what you accept
+                        'Content-Type': 'application/json' // Tell the server you're sending JSON
                     },
-                    // Add firstName and lastName to the submitted data
-                    body: new URLSearchParams({ firstName, lastName, email }) 
+                    body: JSON.stringify(dataToSubmit) 
                 });
 
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
+                // Check if the response was successful (status 200-299)
+                if (response.ok) {
+                    const result = await response.json(); // SheetDB usually returns JSON like {"created": 1}
+                    console.log('SheetDB Response:', result); // Log the response for debugging
 
-                let resultText = await response.text();
-                let result;
-                try {
-                    result = JSON.parse(resultText);
-                } catch (jsonError) {
-                    console.error('Response was not valid JSON:', resultText);
-                    if (resultText.toLowerCase().includes("success")) {
-                        result = { status: 'success', message: 'Subscription successful.' };
+                    // Assuming SheetDB returns a property like "created" or similar on success
+                    if (result.created || response.status === 201 || response.status === 200) {
+                        messageDiv.textContent = 'Thank you for subscribing! We will keep you updated.';
+                        messageDiv.classList.add('success-message');
+                        firstNameInput.value = ''; 
+                        lastNameInput.value = '';  
+                        emailInput.value = '';
                     } else {
-                        result = { status: 'error', message: 'Invalid server response. Please try again.' };
+                        // If the response is OK but doesn't indicate a clear success from SheetDB's perspective
+                        messageDiv.textContent = 'Submission received, but status unclear. Please contact support if issues persist.';
+                        messageDiv.classList.add('error-message'); // Or a neutral message
                     }
-                }
-
-                if (result.status === 'success') {
-                    messageDiv.textContent = result.message || 'Thank you for subscribing! We will keep you updated.';
-                    messageDiv.classList.add('success-message');
-                    firstNameInput.value = ''; // Clear first name field
-                    lastNameInput.value = '';  // Clear last name field
-                    emailInput.value = '';
                 } else {
-                    messageDiv.textContent = result.message || 'An error occurred. Please try again.';
+                    // If response.ok is false, an HTTP error occurred (e.g., 4xx, 5xx)
+                    const errorData = await response.json().catch(() => ({ message: 'Failed to parse error response from server.' }));
+                    console.error(`HTTP error! Status: ${response.status}`, errorData);
+                    messageDiv.textContent = `Error: ${errorData.error || errorData.message || 'Could not submit your details. Please try again.'}`;
                     messageDiv.classList.add('error-message');
                 }
             } catch (error) {
+                // This catches network errors or issues with the fetch request itself
                 console.error('Fetch Error:', error);
-                messageDiv.textContent = 'Failed to connect to the server. Please try again later.';
+                messageDiv.textContent = 'Failed to connect to the server. Please check your network connection and try again.';
                 messageDiv.classList.add('error-message');
             } finally {
                 submitButton.disabled = false;
