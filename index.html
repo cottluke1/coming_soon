@@ -14,11 +14,11 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            /* justify-content: center; */ /* Adjusted for longer content */
             min-height: 100vh;
             margin: 0;
             text-align: center;
-            padding: 1rem;
+            padding: 2rem 1rem; /* Added more top/bottom padding */
             overflow-x: hidden;
         }
 
@@ -69,36 +69,32 @@
             margin-top: 2rem;
             width: 100%;
         }
-        /* Shared style for all input fields */
         .form-input {
             background-color: #1C1C1C;
             border: 1px solid #383838;
             color: #F3F4F6;
             padding: 0.85rem 1.1rem;
-            border-radius: 0.5rem; /* Tailwind rounded-lg */
+            border-radius: 0.5rem;
             font-size: 1.05rem;
             transition: border-color 0.3s, box-shadow 0.3s;
         }
         .form-input::placeholder {
-            color: #6B7280; /* Tailwind gray-500 */
+            color: #6B7280;
         }
         .form-input:focus {
             outline: none;
             border-color: #3B82F6;
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.4);
         }
-
-        .email-input { /* Specific class for email if needed, but form-input covers basics */
+        .email-input {
             width: 100%;
             max-width: 420px;
             margin: 0 auto 1.25rem auto;
         }
-        
         .name-field-container {
-            max-width: 420px; /* Match email input max-width */
-            margin: 0 auto 0.75rem auto; /* Spacing below name fields */
+            max-width: 420px;
+            margin: 0 auto 0.75rem auto;
         }
-
         .submit-button {
             background-image: linear-gradient(to right, #3B82F6 0%, #2563EB 100%);
             color: #FFFFFF;
@@ -137,41 +133,84 @@
             color: #EF4444;
         }
         .footer {
-            margin-top: 4rem;
+            margin-top: 4rem; /* Original footer margin */
             font-size: 0.875rem;
             color: #525252;
+            padding-bottom: 2rem; /* Space before checklist */
         }
 
+        .checklist-section {
+            margin-top: 2rem; 
+            max-width: 700px; 
+            width: 100%;
+            text-align: left; 
+            background-color: #111827; 
+            padding: 1.5rem;
+            border-radius: 0.5rem; 
+            border: 1px solid #374151; 
+        }
+        .checklist-section h2 {
+            font-size: 1.75rem; 
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 1.5rem;
+            text-align: center; 
+        }
+        .checklist-section h3 {
+            font-size: 1.25rem; 
+            font-weight: 600;
+            color: #9CA3AF; 
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        .checklist-section p, .checklist-section li {
+            font-size: 1rem; 
+            color: #D1D5DB; 
+            line-height: 1.6;
+            margin-bottom: 0.5rem;
+        }
+        .checklist-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .checklist-section li {
+            padding-left: 0.5rem; 
+        }
+        .checklist-section code {
+            background-color: #2D3748; 
+            color: #E2E8F0; 
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem; 
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9em;
+            display: block; 
+            white-space: pre-wrap; 
+            margin-bottom: 0.75rem;
+        }
+        .checklist-section .final-checklist-item {
+            display: flex;
+            justify-content: space-between; 
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #374151; 
+        }
+        .checklist-section .final-checklist-item:last-child {
+            border-bottom: none;
+        }
+
+
         @media (max-width: 640px) {
-            .logo {
-                font-size: 3rem;
-            }
-            .subtitle {
-                font-size: 1.125rem;
-            }
-            .coming-soon-text {
-                font-size: 1.875rem;
-            }
-            .description-text {
-                font-size: 1rem;
-            }
-            .email-input, .submit-button, .form-input { /* Ensure form-input is also responsive */
-                max-width: 100%;
-                font-size: 1rem;
-            }
-            .form-input, .email-input { /* Consolidate padding for inputs */
-                padding: 0.75rem 1rem;
-            }
-            .submit-button {
-                padding: 0.75rem 1.5rem;
-            }
-            .name-field-container {
-                flex-direction: column; /* Stack name fields on small screens */
-                gap: 0.75rem; /* Add gap when stacked */
-            }
-            .name-field-container > input {
-                width: 100%; /* Make name fields full width when stacked */
-            }
+            .logo { font-size: 3rem; }
+            .subtitle { font-size: 1.125rem; }
+            .coming-soon-text { font-size: 1.875rem; }
+            .description-text { font-size: 1rem; }
+            .email-input, .submit-button, .form-input { max-width: 100%; font-size: 1rem; }
+            .form-input, .email-input { padding: 0.75rem 1rem; }
+            .submit-button { padding: 0.75rem 1.5rem; }
+            .name-field-container { flex-direction: column; gap: 0.75rem; }
+            .name-field-container > input { width: 100%; }
+            .checklist-section { padding: 1rem; }
+            .checklist-section h2 { font-size: 1.5rem; } 
+            .checklist-section h3 { font-size: 1.125rem; } 
         }
     </style>
 </head>
@@ -239,27 +278,68 @@
         </footer>
     </div>
 
+    <section class="checklist-section">
+        <h2>Setup Instructions & Checklist</h2>
+        <h3>✅ 1. Google Sheet Setup</h3>
+        <p>You only need a Google Sheet with headers:</p>
+        <code>Timestamp | First Name | Last Name | Email</code>
+        <h3>✅ 2. Apps Script Setup</h3>
+        <ul>
+            <li>Inside the Google Sheet: Click <strong>Extensions > Apps Script</strong>.</li>
+            <li>Paste the <code>doPost()</code> script (provided in the other document).</li>
+            <li>Click <strong>Deploy > Manage Deployments > New deployment</strong>.</li>
+            <li>Choose <strong>Web App</strong>, set:</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;Execute as: <strong>Me</strong></li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;Access: <strong>Anyone</strong></li>
+            <li>Click <strong>Deploy</strong> and authorize.</li>
+            <li>Copy the Web App URL and paste it into your <code>SCRIPT_URL</code> in the HTML.</li>
+        </ul>
+        <h3>✅ 3. Enable Access Settings</h3>
+        <ul>
+            <li>Make sure the Google Sheet is shared properly: You don’t need to make the sheet public.</li>
+            <li>Just ensure that the Apps Script has permission to write to it.</li>
+            <li>If your form doesn't work and you get "Permission denied", go back to the Apps Script deployment and make sure “Who has access” = <strong>Anyone</strong>.</li>
+        </ul>
+        <h3>✅ 4. No Backend Required</h3>
+        <p>Because your HTML form uses <code>fetch()</code> to send data to the Web App, you do not need Node.js, PHP, or any server — it's 100% front-end compatible. You’re good using GitHub Pages or any static site hosting.</p>
+        <h3>✅ 5. Files You Need</h3>
+        <ul>
+            <li>Only these two:</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;Your HTML file (this page)</li>
+            <li>&nbsp;&nbsp;&nbsp;&nbsp;The Google Apps Script deployed and connected to your Sheet</li>
+            <li>You don’t need to host anything else unless you're adding analytics, logging, or email confirmations.</li>
+        </ul>
+        <h3>✅ Final Checklist (Hosting on GitHub Pages)</h3>
+        <ul>
+            <li class="final-checklist-item"><span>Google Sheet created with correct headers</span><span>✅</span></li>
+            <li class="final-checklist-item"><span>Apps Script pasted and deployed as Web App</span><span>✅</span></li>
+            <li class="final-checklist-item"><span>Web App URL copied and inserted into HTML</span><span>✅</span></li>
+            <li class="final-checklist-item"><span>GitHub Pages enabled for your repo</span><span>✅</span></li>
+            <li class="final-checklist-item"><span>HTML hosted and tested live</span><span>✅</span></li>
+        </ul>
+    </section>
+
     <script>
         document.getElementById('currentYear').textContent = new Date().getFullYear();
 
         const form = document.getElementById('subscribeForm');
-        const firstNameInput = document.getElementById('firstName'); // Get first name input
-        const lastNameInput = document.getElementById('lastName');   // Get last name input
+        const firstNameInput = document.getElementById('firstName');
+        const lastNameInput = document.getElementById('lastName');
         const emailInput = document.getElementById('email');
         const submitButton = document.getElementById('submitButton');
         const messageDiv = document.getElementById('message');
 
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyNItdJIpXb-Enb6gR5q35baiBlaUz0ZrH4trnoEEddJjEStODmrj5zUX6taD47c_cw/exec';
+        // Ensure this is your LATEST Google Apps Script Web App URL
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyLbX-Kpok7PE_hpMuo-8ZjQ2LMNksdC0EcWsqM5vTY4ZXVGqtodtPU0C6iPmWzJEgm/exec';
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const firstName = firstNameInput.value.trim(); // Get first name value
-            const lastName = lastNameInput.value.trim();   // Get last name value
+            const firstName = firstNameInput.value.trim();
+            const lastName = lastNameInput.value.trim();
             const email = emailInput.value.trim();
 
-            // Client-side validation for name fields (simple check for non-empty)
             if (!firstName) {
                 messageDiv.textContent = 'Please enter your first name.';
                 messageDiv.classList.add('error-message');
@@ -291,11 +371,13 @@
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
                     },
-                    // Add firstName and lastName to the submitted data
                     body: new URLSearchParams({ firstName, lastName, email }) 
                 });
 
                 if (!response.ok) {
+                    // Log the response status and text for more detailed error information
+                    const errorText = await response.text();
+                    console.error(`HTTP error! Status: ${response.status}`, errorText);
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
 
@@ -315,8 +397,8 @@
                 if (result.status === 'success') {
                     messageDiv.textContent = result.message || 'Thank you for subscribing! We will keep you updated.';
                     messageDiv.classList.add('success-message');
-                    firstNameInput.value = ''; // Clear first name field
-                    lastNameInput.value = '';  // Clear last name field
+                    firstNameInput.value = ''; 
+                    lastNameInput.value = '';  
                     emailInput.value = '';
                 } else {
                     messageDiv.textContent = result.message || 'An error occurred. Please try again.';
