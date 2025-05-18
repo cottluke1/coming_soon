@@ -207,8 +207,12 @@
         const submitButton = document.getElementById('submitButton');
         const messageDiv = document.getElementById('message');
 
-        // IMPORTANT: Replace this with your actual Google Apps Script Web App URL
-        const SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE'; 
+        // ==================================================================================
+        // The SCRIPT_URL has been updated with the URL you provided.
+        // ==================================================================================
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyNItdJIpXb-Enb6gR5q35baiBlaUz0ZrH4trnoEEddJjEStODmrj5zUX6taD47c_cw/exec'; 
+        // ==================================================================================
+
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -219,12 +223,13 @@
 
             const email = emailInput.value;
 
+            // This check is what triggers the "Web App URL not configured" error.
             if (!SCRIPT_URL || SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE') {
-                messageDiv.textContent = 'Error: Web App URL not configured.';
+                messageDiv.textContent = 'Error: Web App URL not configured. Please ensure the SCRIPT_URL variable in the HTML is correctly set.';
                 messageDiv.classList.add('error-message');
                 submitButton.disabled = false;
                 submitButton.textContent = 'Notify Me';
-                console.error("Google Apps Script URL is not set in the SCRIPT_URL variable. Please replace 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE' in the script tag.");
+                console.error("CRITICAL: Google Apps Script URL is not set in the SCRIPT_URL variable. It's still the placeholder or empty.");
                 return;
             }
             
@@ -238,19 +243,20 @@
                     body: new URLSearchParams({ email: email }) 
                 });
 
-                // Try to parse JSON, but handle cases where it might not be JSON
                 let resultText = await response.text();
                 let result;
                 try {
                     result = JSON.parse(resultText);
                 } catch (jsonError) {
+                    console.error('Response was not valid JSON:', resultText);
                     // If parsing fails, it might be a non-JSON success response or an error message from Apps Script
                     // that isn't formatted as JSON (e.g., if script execution fails before returning JSON)
-                    console.error('Response was not valid JSON:', resultText);
                     if (response.ok && resultText.toLowerCase().includes("success")) { // Heuristic for non-JSON success
                          result = { status: 'success', message: 'Subscription successful (raw response).' };
                     } else {
-                        result = { status: 'error', message: 'Received an invalid response from the server. Please check server logs.' };
+                        // It could also be an HTML error page from Apps Script if something went very wrong on the server side
+                        // or if the URL is entirely wrong (though we expect this one to be correct now)
+                        result = { status: 'error', message: 'Received an invalid or non-JSON response from the server. Please check server logs.' };
                     }
                 }
 
