@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Linq - Coming Soon</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #0A0A0A; /* Very dark charcoal / off-black */
-            color: #E0E0E0; /* Light gray for primary text */
+            background-color: #0A0A0A;
+            color: #E0E0E0;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -19,7 +19,7 @@
             margin: 0;
             text-align: center;
             padding: 1rem;
-            overflow-x: hidden; /* Prevent horizontal scroll */
+            overflow-x: hidden;
         }
 
         @keyframes fadeInSlideUp {
@@ -39,118 +39,117 @@
             animation: fadeInSlideUp 0.8s ease-out forwards;
         }
         .logo {
-            font-size: 4rem; 
-            font-weight: 900; 
-            color: #FFFFFF; 
+            font-size: 4rem;
+            font-weight: 900;
+            color: #FFFFFF;
             margin-bottom: 0.5rem;
-            text-shadow: 0 0 15px rgba(59, 130, 246, 0.25); /* Subtle blue glow */
+            text-shadow: 0 0 15px rgba(59, 130, 246, 0.25);
         }
         .subtitle {
-            font-size: 1.25rem; 
+            font-size: 1.25rem;
             font-weight: 500;
-            color: #B0B0B0; /* Lighter gray for better contrast */
-            margin-bottom: 3rem; /* Slightly increased margin */
+            color: #B0B0B0;
+            margin-bottom: 3rem;
         }
         .coming-soon-text {
-            font-size: 2.25rem; 
+            font-size: 2.25rem;
             font-weight: 700;
-            color: #3B82F6; /* Tailwind blue-500, for accent */
+            color: #3B82F6;
             margin-bottom: 1.5rem;
             text-transform: uppercase;
-            letter-spacing: 0.12em; /* Slightly increased letter spacing */
+            letter-spacing: 0.12em;
         }
         .description-text {
-            font-size: 1.1rem; /* Slightly larger for readability */
-            color: #A0A0A0; /* Soft gray */
-            margin-bottom: 2.5rem; /* Adjusted margin for new text */
+            font-size: 1.1rem;
+            color: #A0A0A0;
+            margin-bottom: 2.5rem;
             line-height: 1.6;
         }
         .form-container {
-            margin-top: 2rem; /* Adjusted top margin */
+            margin-top: 2rem;
             width: 100%;
         }
         .email-input {
-            background-color: #1C1C1C; /* Darker input background */
-            border: 1px solid #383838; /* Slightly more defined border */
-            color: #F3F4F6; 
-            padding: 0.85rem 1.1rem; /* Increased padding */
-            border-radius: 0.5rem; /* Slightly more rounded (Tailwind rounded-lg) */
+            background-color: #1C1C1C;
+            border: 1px solid #383838;
+            color: #F3F4F6;
+            padding: 0.85rem 1.1rem;
+            border-radius: 0.5rem;
             width: 100%;
-            max-width: 420px; 
-            margin: 0 auto 1.25rem auto; 
-            font-size: 1.05rem; /* Slightly larger font */
+            max-width: 420px;
+            margin: 0 auto 1.25rem auto;
+            font-size: 1.05rem;
             transition: border-color 0.3s, box-shadow 0.3s;
         }
         .email-input::placeholder {
-            color: #6B7280; /* Tailwind gray-500 */
+            color: #6B7280;
         }
         .email-input:focus {
             outline: none;
-            border-color: #3B82F6; 
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.4); 
+            border-color: #3B82F6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.4);
         }
         .submit-button {
-            background-image: linear-gradient(to right, #3B82F6 0%, #2563EB 100%); /* Blue gradient */
-            color: #FFFFFF; 
-            padding: 0.85rem 1.75rem; /* Adjusted padding */
-            border-radius: 0.5rem; /* Tailwind rounded-lg */
+            background-image: linear-gradient(to right, #3B82F6 0%, #2563EB 100%);
+            color: #FFFFFF;
+            padding: 0.85rem 1.75rem;
+            border-radius: 0.5rem;
             font-weight: 600;
-            font-size: 1.05rem; /* Slightly larger font */
+            font-size: 1.05rem;
             border: none;
             cursor: pointer;
             transition: transform 0.2s ease-out, box-shadow 0.3s ease-out;
             width: 100%;
-            max-width: 420px; 
-            margin: 0 auto; 
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2); /* Subtle shadow */
+            max-width: 420px;
+            margin: 0 auto;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
         }
         .submit-button:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3);
         }
         .submit-button:disabled {
-            background-image: none; /* Remove gradient when disabled */
-            background-color: #374151; /* Tailwind gray-700 */
+            background-image: none;
+            background-color: #374151;
             cursor: not-allowed;
             transform: translateY(0);
             box-shadow: none;
         }
         .message {
-            margin-top: 1.5rem; /* Increased margin */
-            font-size: 0.9rem; 
-            min-height: 1.3rem; 
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            min-height: 1.3rem;
         }
         .success-message {
-            color: #10B981; 
+            color: #10B981;
         }
         .error-message {
-            color: #EF4444; 
+            color: #EF4444;
         }
         .footer {
-            margin-top: 4rem; /* Increased margin */
+            margin-top: 4rem;
             font-size: 0.875rem;
-            color: #525252; /* Darker gray for footer */
+            color: #525252;
         }
 
-        /* Responsive adjustments */
-        @media (max-width: 640px) { /* sm breakpoint */
+        @media (max-width: 640px) {
             .logo {
-                font-size: 3rem; 
+                font-size: 3rem;
             }
             .subtitle {
-                font-size: 1.125rem; 
+                font-size: 1.125rem;
             }
             .coming-soon-text {
-                font-size: 1.875rem; 
+                font-size: 1.875rem;
             }
             .description-text {
                 font-size: 1rem;
             }
             .email-input, .submit-button {
-                max-width: 100%; 
+                max-width: 100%;
                 font-size: 1rem;
             }
-             .email-input {
+            .email-input {
                 padding: 0.75rem 1rem;
             }
             .submit-button {
@@ -173,7 +172,7 @@
             </p>
 
             <div class="form-container">
-                <form id="subscribeForm">
+                <form id="subscribeForm" aria-label="Subscribe to Linq updates">
                     <input 
                         type="email" 
                         id="email" 
@@ -181,21 +180,24 @@
                         class="email-input" 
                         placeholder="Enter your email address" 
                         required
+                        aria-label="Email address"
+                        aria-describedby="message"
                     >
                     <button 
                         type="submit" 
                         id="submitButton"
                         class="submit-button"
+                        aria-label="Subscribe"
                     >
                         Notify Me
                     </button>
                 </form>
-                <div id="message" class="message"></div>
+                <div id="message" class="message" role="status"></div>
             </div>
         </main>
 
         <footer class="footer">
-            <p>&copy; <span id="currentYear"></span> Linq. All rights reserved.</p>
+            <p>© <span id="currentYear"></span> Linq. All rights reserved.</p>
         </footer>
     </div>
 
@@ -207,40 +209,36 @@
         const submitButton = document.getElementById('submitButton');
         const messageDiv = document.getElementById('message');
 
-        // ==================================================================================
-        // The SCRIPT_URL has been updated with the URL you provided.
-        // ==================================================================================
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyNItdJIpXb-Enb6gR5q35baiBlaUz0ZrH4trnoEEddJjEStODmrj5zUX6taD47c_cw/exec'; 
-        // ==================================================================================
+        // Google Apps Script Web App URL
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyNItdJIpXb-Enb6gR5q35baiBlaUz0ZrH4trnoEEddJjEStODmrj5zUX6taD47c_cw/exec';
 
+        // Simple email validation regex
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
+            const email = emailInput.value.trim();
+
+            // Client-side email validation
+            if (!emailRegex.test(email)) {
+                messageDiv.textContent = 'Please enter a valid email address.';
+                messageDiv.classList.add('error-message');
+                return;
+            }
+
             submitButton.disabled = true;
             submitButton.textContent = 'Submitting...';
             messageDiv.textContent = '';
-            messageDiv.className = 'message'; // Reset classes
+            messageDiv.classList.remove('success-message', 'error-message');
 
-            const email = emailInput.value;
-
-            // This check is what triggers the "Web App URL not configured" error.
-            if (!SCRIPT_URL || SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE') {
-                messageDiv.textContent = 'Error: Web App URL not configured. Please ensure the SCRIPT_URL variable in the HTML is correctly set.';
-                messageDiv.classList.add('error-message');
-                submitButton.disabled = false;
-                submitButton.textContent = 'Notify Me';
-                console.error("CRITICAL: Google Apps Script URL is not set in the SCRIPT_URL variable. It's still the placeholder or empty.");
-                return;
-            }
-            
             try {
                 const response = await fetch(SCRIPT_URL, {
                     method: 'POST',
-                    mode: 'cors', 
+                    mode: 'cors',
                     headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded', 
+                        'Content-Type': 'application/x-www-form-urlencoded',
                     },
-                    body: new URLSearchParams({ email: email }) 
+                    body: new URLSearchParams({ email })
                 });
 
                 let resultText = await response.text();
@@ -249,29 +247,24 @@
                     result = JSON.parse(resultText);
                 } catch (jsonError) {
                     console.error('Response was not valid JSON:', resultText);
-                    // If parsing fails, it might be a non-JSON success response or an error message from Apps Script
-                    // that isn't formatted as JSON (e.g., if script execution fails before returning JSON)
-                    if (response.ok && resultText.toLowerCase().includes("success")) { // Heuristic for non-JSON success
-                         result = { status: 'success', message: 'Subscription successful (raw response).' };
+                    if (response.ok && resultText.toLowerCase().includes("success")) {
+                        result = { status: 'success', message: 'Subscription successful.' };
                     } else {
-                        // It could also be an HTML error page from Apps Script if something went very wrong on the server side
-                        // or if the URL is entirely wrong (though we expect this one to be correct now)
-                        result = { status: 'error', message: 'Received an invalid or non-JSON response from the server. Please check server logs.' };
+                        result = { status: 'error', message: 'Invalid server response. Please try again.' };
                     }
                 }
-
 
                 if (result.status === 'success') {
                     messageDiv.textContent = result.message || 'Thank you for subscribing! We will keep you updated.';
                     messageDiv.classList.add('success-message');
-                    emailInput.value = ''; 
+                    emailInput.value = '';
                 } else {
                     messageDiv.textContent = result.message || 'An error occurred. Please try again.';
                     messageDiv.classList.add('error-message');
                 }
             } catch (error) {
-                console.error('Error submitting form:', error);
-                messageDiv.textContent = 'An unexpected error occurred. Please check your network connection or try again later.';
+                console.error('Fetch Error:', error);
+                messageDiv.textContent = 'Failed to connect to the server. Please check your internet connection and try again.';
                 messageDiv.classList.add('error-message');
             } finally {
                 submitButton.disabled = false;
