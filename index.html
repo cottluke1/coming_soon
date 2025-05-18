@@ -69,26 +69,36 @@
             margin-top: 2rem;
             width: 100%;
         }
-        .email-input {
+        /* Shared style for all input fields */
+        .form-input {
             background-color: #1C1C1C;
             border: 1px solid #383838;
             color: #F3F4F6;
             padding: 0.85rem 1.1rem;
-            border-radius: 0.5rem;
-            width: 100%;
-            max-width: 420px;
-            margin: 0 auto 1.25rem auto;
+            border-radius: 0.5rem; /* Tailwind rounded-lg */
             font-size: 1.05rem;
             transition: border-color 0.3s, box-shadow 0.3s;
         }
-        .email-input::placeholder {
-            color: #6B7280;
+        .form-input::placeholder {
+            color: #6B7280; /* Tailwind gray-500 */
         }
-        .email-input:focus {
+        .form-input:focus {
             outline: none;
             border-color: #3B82F6;
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.4);
         }
+
+        .email-input { /* Specific class for email if needed, but form-input covers basics */
+            width: 100%;
+            max-width: 420px;
+            margin: 0 auto 1.25rem auto;
+        }
+        
+        .name-field-container {
+            max-width: 420px; /* Match email input max-width */
+            margin: 0 auto 0.75rem auto; /* Spacing below name fields */
+        }
+
         .submit-button {
             background-image: linear-gradient(to right, #3B82F6 0%, #2563EB 100%);
             color: #FFFFFF;
@@ -145,15 +155,22 @@
             .description-text {
                 font-size: 1rem;
             }
-            .email-input, .submit-button {
+            .email-input, .submit-button, .form-input { /* Ensure form-input is also responsive */
                 max-width: 100%;
                 font-size: 1rem;
             }
-            .email-input {
+            .form-input, .email-input { /* Consolidate padding for inputs */
                 padding: 0.75rem 1rem;
             }
             .submit-button {
                 padding: 0.75rem 1.5rem;
+            }
+            .name-field-container {
+                flex-direction: column; /* Stack name fields on small screens */
+                gap: 0.75rem; /* Add gap when stacked */
+            }
+            .name-field-container > input {
+                width: 100%; /* Make name fields full width when stacked */
             }
         }
     </style>
@@ -173,11 +190,32 @@
 
             <div class="form-container">
                 <form id="subscribeForm" aria-label="Subscribe to Linq updates">
+                    <div class="name-field-container flex space-x-4 mb-3">
+                        <input 
+                            type="text" 
+                            id="firstName" 
+                            name="firstName" 
+                            class="form-input w-1/2" 
+                            placeholder="First Name" 
+                            required
+                            aria-label="First Name"
+                        >
+                        <input 
+                            type="text" 
+                            id="lastName" 
+                            name="lastName" 
+                            class="form-input w-1/2" 
+                            placeholder="Last Name" 
+                            required
+                            aria-label="Last Name"
+                        >
+                    </div>
+
                     <input 
                         type="email" 
                         id="email" 
                         name="email" 
-                        class="email-input" 
+                        class="form-input email-input" 
                         placeholder="Enter your email address" 
                         required
                         aria-label="Email address"
@@ -197,7 +235,7 @@
         </main>
 
         <footer class="footer">
-            <p>© <span id="currentYear"></span> Linq. All rights reserved.</p>
+            <p>&copy; <span id="currentYear"></span> Linq. All rights reserved.</p>
         </footer>
     </div>
 
@@ -205,6 +243,8 @@
         document.getElementById('currentYear').textContent = new Date().getFullYear();
 
         const form = document.getElementById('subscribeForm');
+        const firstNameInput = document.getElementById('firstName'); // Get first name input
+        const lastNameInput = document.getElementById('lastName');   // Get last name input
         const emailInput = document.getElementById('email');
         const submitButton = document.getElementById('submitButton');
         const messageDiv = document.getElementById('message');
@@ -215,11 +255,27 @@
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
+            const firstName = firstNameInput.value.trim(); // Get first name value
+            const lastName = lastNameInput.value.trim();   // Get last name value
             const email = emailInput.value.trim();
 
+            // Client-side validation for name fields (simple check for non-empty)
+            if (!firstName) {
+                messageDiv.textContent = 'Please enter your first name.';
+                messageDiv.classList.add('error-message');
+                messageDiv.classList.remove('success-message');
+                return;
+            }
+            if (!lastName) {
+                messageDiv.textContent = 'Please enter your last name.';
+                messageDiv.classList.add('error-message');
+                messageDiv.classList.remove('success-message');
+                return;
+            }
             if (!emailRegex.test(email)) {
                 messageDiv.textContent = 'Please enter a valid email address.';
                 messageDiv.classList.add('error-message');
+                messageDiv.classList.remove('success-message');
                 return;
             }
 
@@ -235,7 +291,8 @@
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
                     },
-                    body: new URLSearchParams({ email })
+                    // Add firstName and lastName to the submitted data
+                    body: new URLSearchParams({ firstName, lastName, email }) 
                 });
 
                 if (!response.ok) {
@@ -258,6 +315,8 @@
                 if (result.status === 'success') {
                     messageDiv.textContent = result.message || 'Thank you for subscribing! We will keep you updated.';
                     messageDiv.classList.add('success-message');
+                    firstNameInput.value = ''; // Clear first name field
+                    lastNameInput.value = '';  // Clear last name field
                     emailInput.value = '';
                 } else {
                     messageDiv.textContent = result.message || 'An error occurred. Please try again.';
