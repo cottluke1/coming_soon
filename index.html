@@ -209,17 +209,14 @@
         const submitButton = document.getElementById('submitButton');
         const messageDiv = document.getElementById('message');
 
-        // Google Apps Script Web App URL
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyNItdJIpXb-Enb6gR5q35baiBlaUz0ZrH4trnoEEddJjEStODmrj5zUX6taD47c_cw/exec';
 
-        // Simple email validation regex
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = emailInput.value.trim();
 
-            // Client-side email validation
             if (!emailRegex.test(email)) {
                 messageDiv.textContent = 'Please enter a valid email address.';
                 messageDiv.classList.add('error-message');
@@ -241,13 +238,17 @@
                     body: new URLSearchParams({ email })
                 });
 
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
                 let resultText = await response.text();
                 let result;
                 try {
                     result = JSON.parse(resultText);
                 } catch (jsonError) {
                     console.error('Response was not valid JSON:', resultText);
-                    if (response.ok && resultText.toLowerCase().includes("success")) {
+                    if (resultText.toLowerCase().includes("success")) {
                         result = { status: 'success', message: 'Subscription successful.' };
                     } else {
                         result = { status: 'error', message: 'Invalid server response. Please try again.' };
@@ -264,7 +265,7 @@
                 }
             } catch (error) {
                 console.error('Fetch Error:', error);
-                messageDiv.textContent = 'Failed to connect to the server. Please check your internet connection and try again.';
+                messageDiv.textContent = 'Failed to connect to the server. Please try again later.';
                 messageDiv.classList.add('error-message');
             } finally {
                 submitButton.disabled = false;
